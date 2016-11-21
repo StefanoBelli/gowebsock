@@ -1,4 +1,4 @@
-### WebSocket Tester 
+## WebSocket Tester 
 ===
 
 Simple CLI-based program to test WebSocket connection, written in Golang.
@@ -7,11 +7,9 @@ Simple CLI-based program to test WebSocket connection, written in Golang.
 
 ### Compile
 ===
-
-	```bash
+	
 	cd src
 	go build *.go
-	```
 
 You may need to set GOPATH env var and download golang.org/x/net/websocket
 
@@ -41,7 +39,9 @@ Then connect using: "connect"
  >>> 
   ~~~
 Anyway, use help to get help :)
+
 PS. */close* does not exit program, just closes connection 
+
 PS. In websocket connection, use *//close* and *//force_close* to send */close* and */force_close* messages to the server and avoid closing connection
 
 
