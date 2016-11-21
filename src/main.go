@@ -37,7 +37,6 @@ func loopPrompt(helpmap map[string]string) {
 			printHelp(helpmap)
 			continue
 		}
-		
 
 		argcmd := strings.Split(cmd," ")
 

@@ -49,14 +49,14 @@ func establishAndDialog(url string) {
 		}
 
 		if _, err := wsc.Write([]byte(str)) ; err != nil {
-			fmt.Println(" (disconnected) Connection with %s done.\n",url)
+			fmt.Printf(" (disconnected) Connection with %s done.\n",url)
 			break
 		}
 
 		if bs, err := wsc.Read(destmsg) ; err == nil && bs > 0 {
 			fmt.Printf(" (ws) < %s \n",destmsg)
 		} else if err != nil || bs <= 0 {
-			fmt.Println(" (disconnected) Connection with %s done.\n",url)
+			fmt.Printf(" (disconnected) Connection with %s done.\n",url)
 			break
 		}
 	}
