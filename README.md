@@ -1,5 +1,4 @@
 ## WebSocket Tester 
-===
 
 Simple CLI-based program to test WebSocket connection, written in Golang.
 

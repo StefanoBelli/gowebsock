@@ -8,9 +8,9 @@ import (
 	"strings"
 )
 
-func establishAndDialog(url string) {
+func establishAndDialog(url , proto string) {
 	origin := "http://localhost/"
-	wsc,err := websocket.Dial(url,"",origin)
+	wsc,err := websocket.Dial(url,proto,origin)
 
 	if err != nil {
 		perr("Cannot connect to:",url)

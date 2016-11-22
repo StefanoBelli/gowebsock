@@ -2,20 +2,34 @@ package main
 
 import (
 	"os"
-	"errors"
 	"fmt"
 )
 
-func getUrl() (string,error) {
+const (
+	ARGS_NOURL string = "null-url-from-args"
+	ARGS_NOPROTO string = "null-proto-from-args"
+)
+
+type args struct {
+	url string
+	proto string
+}
+
+func getArgs() args {
 	arg := os.Args[1:]
+	_args := args{ARGS_NOURL,ARGS_NOPROTO}
 
 	for i,e := range arg {
 		if ( e == "-u" ) {
-			return arg[i+1],nil
+			_args.url=arg[i+1]
+		}
+
+		if ( e == "-p" ) {
+			_args.proto=arg[i+1]
 		}
 	}
 
-	return "",errors.New("nourl")
+	return _args
 }
 
 func pinfo(msg ... string) {
@@ -51,6 +65,7 @@ func setOptMap() map[string]string {
 	m["connect"] = "connects to the chosen URL"
 	m["quit"] = "exits wsclient, same as exit"
 	m["exit"] = "exits wsclient, same as quit"
+	m["proto"] = "set protocol: \"proto <protocol>\", use \"proto default\" to use the default one"
 	
 	return m
 }

@@ -9,8 +9,10 @@ import (
 
 func loopPrompt(helpmap map[string]string) {
 	const NIL_CMD = "null-string-cmd"
+
+	proto := ""
 	url := NIL_CMD
-	
+
 	buf_reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Printf(" >>> ")
@@ -26,8 +28,13 @@ func loopPrompt(helpmap map[string]string) {
 			pinfo("Exiting... Bye bye!")
 			os.Exit(0)
 		} else if cmd == "connect" && url != NIL_CMD {
-			pinfo("Connecting to:",url)
-			establishAndDialog(url)
+			if proto != "" {
+				pinfo("Connecting to:",url,"using protocol:",proto)
+			} else {
+				pinfo("Connecting to:",url)
+			}
+
+			establishAndDialog(url,proto)
 			continue
 		} else if cmd == "connect" && url == NIL_CMD {
 			perr("You need to set an URL before connecting")
@@ -40,22 +47,35 @@ func loopPrompt(helpmap map[string]string) {
 
 		argcmd := strings.Split(cmd," ")
 
-		if argcmd[0] == "url" && len(argcmd[1]) > 0 {
+		if len(argcmd) == 1 {
+			pinfo("Argument required for",argcmd[0])
+			continue
+		}
+
+		if argcmd[0] == "url" {
 			url = argcmd[1]
 			pinfo("Set URL:",url)
-		} else if argcmd[0] == "url" && len(argcmd[1]) == 0 {
-			perr("url argument cannot be empty")
+		} else if argcmd[0] == "proto" {
+			if argcmd[1] == "default" {
+				proto = ""
+				pinfo("Set default proto")
+			} else {
+				proto = argcmd[1]
+				pinfo("Set Proto:",proto)
+			}
 		}
 	}
 }
 
 func main() {
-	url,err := getUrl()
-
+	arg := getArgs()
 	fmt.Println("WebSocket message exchanger")
-	if err == nil {
-		pinfo("Connecting to:",url);
-		establishAndDialog(url)
+	if arg.url != ARGS_NOURL && arg.proto == ARGS_NOPROTO {
+		pinfo("Connecting to:",arg.url)
+		establishAndDialog(arg.url,"")
+	} else if arg.url != ARGS_NOURL && arg.proto != ARGS_NOPROTO {
+		pinfo("Connecting to:",arg.url,"using protocol:",arg.proto)
+		establishAndDialog(arg.url,arg.proto)
 	} else {
 		fmt.Println("Start setting url: \"url myurl\"")
 		fmt.Println("Then connect using: \"connect\"")
